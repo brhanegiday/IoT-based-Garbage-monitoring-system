@@ -1,10 +1,10 @@
-int trigPin=12;
-int echoPin=11;
+int trigPin=3;
+int echoPin=2;
 int led=10;
 // settng the threshold value of a dustpin
 int threshold=10;
 int buzzer=9;
-long duration,distance;
+long duration,distance_in_centmeter;
 void setup() {
 
 //Serial Port begin
@@ -26,18 +26,14 @@ delayMicroseconds(10);
 digitalWrite(trigPin, LOW);
 
 digitalWrite(led,LOW);
-// read the signal ffrom the sensor: a HIGH pulse 
+// read the signal from the sensor: a HIGH pulse 
 // duration is the time in (microseconds) from the sending 
 // of the pinng to the reception of its echo off of an object
 
 pinMode(echoPin,HIGH);
 duration=pulseIn(echoPin,HIGH);
 
-//convert the time into a distance
-// speed of sound 340m/s
-//distance=speed*duration=340m/s*duration
-
-distance=(duration/2)*29.1;// Divide by 29.1 or multiply by 0.0343
+distance_in_centmeter =  microseconds_to_centmeter(duration); // this calles the method microseconds_to_centmeter
 
 //About the Buzzer
 /*Tone needs 2 arguments, but can take three
@@ -45,7 +41,7 @@ distance=(duration/2)*29.1;// Divide by 29.1 or multiply by 0.0343
     2) Frequency - this is in hertz (cycles per second) which determines the pitch of the noise made
     3) Duration - how long the tone plays
 */    
-if (distance <=threshold)
+if (distance_in_centmeter <=threshold)
 {
   //blink LED
   digitalWrite(led,HIGH);
@@ -57,9 +53,11 @@ if (distance <=threshold)
 }
 else
 {}
+}
 
-Serial.print("Distance is: ");
-Serial.print(distance);
-Serial.println();
-delay(250);
+long microseconds_to_centmeter(long time_in_microseconds) {
+ //convert the time into a distance
+// speed of sound 340m/s
+//distance=speed*duration=340m/s*duration
+  return (time_in_microseconds/2)*0.0343;
 }

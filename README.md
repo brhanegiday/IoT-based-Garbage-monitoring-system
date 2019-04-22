@@ -1,1 +1,1 @@
-# IoT-based-Garbage-monitoring-system
+# IoT-based-Garbage-Collection and monitoring-system
